@@ -12,6 +12,11 @@ crash.log
 *.tfvars
 *.tfvars.json
 
+*.exe
+*.lock.hcl
+*.tfstate
+*./.terraform
+*.terraform.tfstate.backup
 # Override files (used for machine-specific or temporary configurations)
 override.tf
 override.tf.json
