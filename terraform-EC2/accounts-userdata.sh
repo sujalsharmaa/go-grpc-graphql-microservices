@@ -31,7 +31,7 @@ apt install postgresql-client-16 -y
 
 
 # Clone repository
-REPO_URL="https://github.com/AkhilSharma90/go-grpc-graphql-microservices.git"
+REPO_URL="https://github.com/sujalsharmaa/go-grpc-graphql-microservices.git"
 REPO_DIR="go-grpc-graphql-microservices"
 
 echo "Cloning repository..."

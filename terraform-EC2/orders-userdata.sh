@@ -27,7 +27,7 @@ echo "Docker version:"
 docker --version || { echo "Docker installation failed!"; exit 1; }
 
 # Clone repository
-REPO_URL="https://github.com/AkhilSharma90/go-grpc-graphql-microservices.git"
+REPO_URL="https://github.com/sujalsharmaa/go-grpc-graphql-microservices.git"
 REPO_DIR="go-grpc-graphql-microservices"
 
 echo "Cloning repository..."
