@@ -1,5 +1,5 @@
 *.exe
 *.lock.hcl
 *.tfstate
-*.terraform
+*./.terraform
 *.terraform.tfstate.backup
