@@ -35,7 +35,7 @@ REPO_URL="https://github.com/sujalsharmaa/go-grpc-graphql-microservices.git"
 REPO_DIR="go-grpc-graphql-microservices"
 
 echo "Cloning repository..."
-git clone "$REPO_URL" || { echo "Failed to clone repository!"; exit 1; }
+git clone -b features/cloud-and-devops-features "$REPO_URL" || { echo "Failed to clone repository!"; exit 1; }
 
 # Navigate to the account service directory
 cd "$REPO_DIR/account" || { echo "Failed to navigate to account!"; exit 1; }
