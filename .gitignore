@@ -4,7 +4,10 @@
 
 # Crash log files
 crash.log
-
+./terraform-EC2/.terraform
+./terraform-EC2/.terraform.lock.hcl
+./terraform-EC2/terraform.tfstate.backup
+./terraform-EC2/terraform.tfstate
 # Terraform variable files
 *.tfvars
 *.tfvars.json
