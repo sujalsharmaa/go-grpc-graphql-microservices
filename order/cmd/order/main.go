@@ -4,9 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 	"time"
-
 	"github.com/akhilsharma90/go-graphql-microservice/order"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/tinrab/retry"
@@ -37,15 +35,8 @@ func initDbOrder(cfg Config) {
 		}
 		defer db.Close()
 
-		// Read the SQL script (you would load your actual up.sql file here)
-		sqlFile := "./up.sql" // Path to your SQL script file
-		data, err := os.ReadFile(sqlFile)
-		if err != nil {
-			log.Fatalf("Failed to read up.sql: %v", err)
-		}
-
 		// Execute the SQL script
-		_, err = db.Exec(string(data))
+		db.Exec("CREATE TABLE IF NOT EXISTS orders (id CHAR(27) PRIMARY KEY,created_at TIMESTAMP WITH TIME ZONE NOT NULL,account_id CHAR(27) NOT NULL,total_price MONEY NOT NULL);CREATE TABLE IF NOT EXISTS order_products (order_id CHAR(27) REFERENCES orders (id) ON DELETE CASCADE,product_id CHAR(27),quantity INT NOT NULL,PRIMARY KEY (product_id, order_id));")
 		if err != nil {
 			log.Fatalf("Failed to execute up.sql: %v", err)
 		}
