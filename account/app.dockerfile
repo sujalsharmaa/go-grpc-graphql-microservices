@@ -17,7 +17,7 @@ COPY vendor vendor
 COPY account account
 
 # Copy the SQL script into the build context
-COPY up.sql account/cmd/account/
+COPY up.sql .
 
 # Build the application
 RUN GO111MODULE=on go build -mod vendor -o /go/bin/app ./account/cmd/account
@@ -30,6 +30,9 @@ WORKDIR /usr/bin
 
 # Copy the binary from the build stage
 COPY --from=build /go/bin/app .
+
+# Copy the SQL script into the final image
+COPY --from=build /go/src/github.com/akhilsharma90/go-graphql-microservice/up.sql .
 
 # Expose the application port
 EXPOSE 8080

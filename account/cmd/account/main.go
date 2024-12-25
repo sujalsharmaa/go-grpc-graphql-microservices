@@ -36,7 +36,7 @@ func initDbAccount(cfg Config) {
 		defer db.Close()
 
 		// Read the SQL script (you would load your actual up.sql file here)
-		sqlFile := "./up.sql" // Path to your SQL script file
+		sqlFile := "/usr/bin/up.sql" // Path to your SQL script file
 		data, err := ioutil.ReadFile(sqlFile)
 		if err != nil {
 			log.Fatalf("Failed to read up.sql: %s", err)
