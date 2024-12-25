@@ -1,20 +1,17 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
 	"log"
-	"net" // Import net package for net.Listen
-	"net/http"
+	"net/http" // Import the http package
 	"time"
-	"google.golang.org/grpc"
+	"fmt"
 	"github.com/akhilsharma90/go-graphql-microservice/account"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/tinrab/retry"
+	"database/sql"
 	_ "github.com/lib/pq" // PostgreSQL driver
 )
 
-// Config struct that reads environment variables
 type Config struct {
 	DatabaseURL string `envconfig:"DATABASE_URL"`
 	ENV         string `envconfig:"ENV"`
@@ -49,10 +46,9 @@ func main() {
 
 	initDbAccount(cfg)
 
-	repoConnStr := fmt.Sprintf("postgres://postgres:postgres@%s:5432/postgres", cfg.DatabaseURL)
 	var r account.Repository
 	retry.ForeverSleep(2*time.Second, func(_ int) (err error) {
-		r, err = account.NewPostgresRepository(repoConnStr)
+		r, err = account.NewPostgresRepository(cfg.DatabaseURL)
 		if err != nil {
 			log.Println(err)
 		}
@@ -60,26 +56,20 @@ func main() {
 	})
 	defer r.Close()
 
-	// Start the gRPC server in a separate goroutine
-	go func() {
-		log.Println("Starting gRPC server on port 8080...")
-		s := account.NewService(r)
-		listener, err := net.Listen("tcp", ":8080")
-		if err != nil {
-			log.Fatalf("Failed to start gRPC server: %v", err)
-		}
-		grpcServer := grpc.NewServer()
-		account.RegisterServiceServer(grpcServer, s) // Make sure this function is available from the generated code
-		log.Fatal(grpcServer.Serve(listener))
-	}()
-
-	// Simple "/" health check route on port 8080
+	// Simple health check route
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(`{"status": 200, "message": "health ok"}`))
 	})
 
-	// Start HTTP server for health check on port 8080
-	log.Println("Health check route available at / on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	// Start HTTP server on port 8080 for health check
+	go func() {
+		log.Println("Starting HTTP server on port 8080 for health check...")
+		log.Fatal(http.ListenAndServe(":8080", nil))
+	}()
+
+	// gRPC server
+	log.Println("Listening on port 8080 for gRPC...")
+	s := account.NewService(r)
+	log.Fatal(account.ListenGRPC(s, 8080))
 }
