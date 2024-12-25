@@ -1,13 +1,35 @@
+# Stage 1: Build the application
 FROM golang:1.21-alpine AS build
+
+# Install dependencies
 RUN apk --no-cache add gcc g++ make ca-certificates
+
+# Set the working directory
 WORKDIR /go/src/github.com/akhilsharma90/go-graphql-microservice
+
+# Copy Go module files
 COPY go.mod go.sum ./
+
+# Copy the vendor directory
 COPY vendor vendor
+
+# Copy application code
 COPY account account
+
+# Build the application
 RUN GO111MODULE=on go build -mod vendor -o /go/bin/app ./account/cmd/account
 
-FROM alpine:3.1
+# Stage 2: Create the final lightweight image
+FROM alpine:3.11
+
+# Set the working directory
 WORKDIR /usr/bin
-COPY --from=build /go/bin .
+
+# Copy the binary from the build stage
+COPY --from=build /go/bin/app .
+
+# Expose the application port
 EXPOSE 8080
+
+# Run the application
 CMD ["app"]
