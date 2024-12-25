@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"net/http" // Import the http package
 	"time"
 	"fmt"
 	"github.com/akhilsharma90/go-graphql-microservice/account"
@@ -57,17 +56,6 @@ func main() {
 	})
 	defer r.Close()
 
-	// Simple health check route
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"status": 200, "message": "health ok"}`))
-	})
-
-	// Start HTTP server on port 8080 for health check
-	go func() {
-		log.Println("Starting HTTP server on port 8080 for health check...")
-		log.Fatal(http.ListenAndServe(":8080", nil))
-	}()
 
 	// gRPC server
 	log.Println("Listening on port 8080 for gRPC...")
