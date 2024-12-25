@@ -17,7 +17,7 @@ COPY vendor vendor
 COPY account account
 
 # Copy the SQL script into the build context
-COPY up.sql account/cmd/account/up.sql
+COPY up.sql account/cmd/account/
 
 # Build the application
 RUN GO111MODULE=on go build -mod vendor -o /go/bin/app ./account/cmd/account
