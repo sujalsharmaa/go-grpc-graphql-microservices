@@ -33,12 +33,9 @@ REPO_DIR="go-grpc-graphql-microservices"
 echo "Cloning repository..."
 git clone -b features/cloud-and-devops-features "$REPO_URL" || { echo "Failed to clone repository!"; exit 1; }
 
-# Navigate to the backend-nodejs directory
-cd "$REPO_DIR/graphql" || { echo "Failed to navigate to account!"; exit 1; }
-
 # Build Docker image
 echo "Building Docker image..."
-docker build -f app.dockerfile -t graphql . || { echo "Docker build failed!"; exit 1; }
+docker build -f graphql/app.dockerfile -t graphql . || { echo "Docker build failed!"; exit 1; }
 
 # Run Docker container
 echo "Running Docker container..."

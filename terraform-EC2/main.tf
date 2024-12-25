@@ -183,7 +183,7 @@ resource "aws_launch_template" "accounts_launch_template" {
   }
 
   block_device_mappings {
-    # device_name = "/dev/sda1"
+     device_name = "/dev/sda1"
     ebs {
       volume_size = 30
       volume_type = "gp3"
@@ -298,7 +298,7 @@ resource "aws_launch_template" "ElasticSearch_launch_template" {
   }
 
   block_device_mappings {
-    # device_name = "/dev/sda1"
+     device_name = "/dev/sda1"
     ebs {
       volume_size = 30
       volume_type = "gp3"
@@ -413,7 +413,7 @@ resource "aws_launch_template" "catalog_launch_template" {
   }
 
   block_device_mappings {
-    # device_name = "/dev/sda1"
+     device_name = "/dev/sda1"
     ebs {
       volume_size = 30
       volume_type = "gp3"
@@ -528,7 +528,7 @@ resource "aws_launch_template" "orders_launch_template" {
   }
 
   block_device_mappings {
-    # device_name = "/dev/sda1"
+    device_name = "/dev/sda1"
     ebs {
       volume_size = 30
       volume_type = "gp3"
@@ -643,7 +643,7 @@ resource "aws_launch_template" "graphql_launch_template" {
   }
 
   block_device_mappings {
-    # device_name = "/dev/sda1"
+     device_name = "/dev/sda1"
     ebs {
       volume_size = 30
       volume_type = "gp3"

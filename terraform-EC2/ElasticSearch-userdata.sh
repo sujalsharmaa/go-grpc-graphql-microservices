@@ -25,7 +25,11 @@ apt-get clean
 # Verify Docker installation
 echo "Docker version:"
 docker --version || { echo "Docker installation failed!"; exit 1; }
-
-docker run -d -p 80:9200 elasticsearch || { echo "Failed to start Docker container!"; exit 1; }
+docker run -d -p 80:9200 \
+  --memory=2g \
+  -e ES_JAVA_OPTS="-Xms1g -Xmx1g" \
+  -e discovery.type="single-node" \
+  docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+ || { echo "Failed to start Docker container!"; exit 1; }
 
 echo "Setup complete! You can access the application on port 80."

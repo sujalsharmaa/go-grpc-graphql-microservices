@@ -33,12 +33,9 @@ REPO_DIR="go-grpc-graphql-microservices"
 echo "Cloning repository..."
 git clone -b features/cloud-and-devops-features "$REPO_URL" || { echo "Failed to clone repository!"; exit 1; }
 
-# Navigate to the catalog directory
-cd "$REPO_DIR/catalog" || { echo "Failed to navigate to catalog!"; exit 1; }
-
 # Build Docker image
 echo "Building Docker image..."
-docker build -f app.dockerfile -t catalog . || { echo "Docker build failed!"; exit 1; }
+docker build -f catalog/app.dockerfile -t catalog . || { echo "Docker build failed!"; exit 1; }
 
 # Run Docker container
 echo "Running Docker container..."
