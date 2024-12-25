@@ -205,7 +205,7 @@ resource "aws_launch_template" "accounts_launch_template" {
 resource "aws_lb_target_group" "accounts_service_tg" {
   name     = "accounts-service-tg"
   port     = 80
-  protocol = "HTTP"
+  protocol = "TCP"
   vpc_id   = aws_vpc.main.id
   tags = {
     Name        = "accounts-target-group"
@@ -216,7 +216,7 @@ resource "aws_lb_target_group" "accounts_service_tg" {
 resource "aws_lb" "accounts_load-balancer" {
   name               = "accounts-load-balancer"
   internal           = false
-  load_balancer_type = "application"
+  load_balancer_type = "network"
   security_groups    = [aws_security_group.ec2_sg.id]
   subnets            = [aws_subnet.public-zone1.id, aws_subnet.public-zone2.id]
   tags = {
@@ -234,7 +234,7 @@ resource "aws_lb_listener" "http_accounts" {
     target_group_arn = aws_lb_target_group.accounts_service_tg.arn
   }
   tags = {
-    Name        = "http-listener"
+    Name        = "TCP-listener"
     Environment = local.env
   }
 }
@@ -435,7 +435,7 @@ resource "aws_launch_template" "catalog_launch_template" {
 resource "aws_lb_target_group" "catalog_service_tg" {
   name     = "catalog-service-tg"
   port     = 80
-  protocol = "HTTP"
+  protocol = "TCP"
   vpc_id   = aws_vpc.main.id
   tags = {
     Name        = "catalog-target-group"
@@ -446,7 +446,7 @@ resource "aws_lb_target_group" "catalog_service_tg" {
 resource "aws_lb" "catalog_load-balancer" {
   name               = "catalog-load-balancer"
   internal           = false
-  load_balancer_type = "application"
+  load_balancer_type = "network"
   security_groups    = [aws_security_group.ec2_sg.id]
   subnets            = [aws_subnet.public-zone1.id, aws_subnet.public-zone2.id]
   tags = {
@@ -550,7 +550,7 @@ resource "aws_launch_template" "orders_launch_template" {
 resource "aws_lb_target_group" "orders_service_tg" {
   name     = "orders-service-tg"
   port     = 80
-  protocol = "HTTP"
+  protocol = "TCP"
   vpc_id   = aws_vpc.main.id
   tags = {
     Name        = "orders-target-group"
@@ -561,7 +561,7 @@ resource "aws_lb_target_group" "orders_service_tg" {
 resource "aws_lb" "orders_load-balancer" {
   name               = "orders-load-balancer"
   internal           = false
-  load_balancer_type = "application"
+  load_balancer_type = "network"
   security_groups    = [aws_security_group.ec2_sg.id]
   subnets            = [aws_subnet.public-zone1.id, aws_subnet.public-zone2.id]
   tags = {
@@ -665,7 +665,7 @@ resource "aws_launch_template" "graphql_launch_template" {
 resource "aws_lb_target_group" "graphql_service_tg" {
   name     = "graphql-service-tg"
   port     = 80
-  protocol = "HTTP"
+  protocol = "TCP"
   vpc_id   = aws_vpc.main.id
   tags = {
     Name        = "graphql-target-group"
@@ -676,7 +676,7 @@ resource "aws_lb_target_group" "graphql_service_tg" {
 resource "aws_lb" "graphql_load-balancer" {
   name               = "graphql-load-balancer"
   internal           = false
-  load_balancer_type = "application"
+  load_balancer_type = "network"
   security_groups    = [aws_security_group.ec2_sg.id]
   subnets            = [aws_subnet.public-zone1.id, aws_subnet.public-zone2.id]
   tags = {
