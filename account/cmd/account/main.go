@@ -45,10 +45,11 @@ func main() {
 	}
 
 	initDbAccount(cfg)
+	repoConnStr := fmt.Sprintf("postgres://postgres:postgres@%s:5432/postgres", cfg.DatabaseURL)
 
 	var r account.Repository
 	retry.ForeverSleep(2*time.Second, func(_ int) (err error) {
-		r, err = account.NewPostgresRepository(cfg.DatabaseURL)
+		r, err = account.NewPostgresRepository(repoConnStr)
 		if err != nil {
 			log.Println(err)
 		}

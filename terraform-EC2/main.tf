@@ -396,7 +396,7 @@ resource "aws_route53_record" "ElasticSearch_records" {
   alias {
     name                   = aws_lb.ElasticSearch_load-balancer.dns_name
     zone_id                = aws_lb.ElasticSearch_load-balancer.zone_id
-    evaluate_target_health = true
+    evaluate_target_health = false
   }
 }
 
@@ -511,7 +511,7 @@ resource "aws_route53_record" "catalog_records" {
   alias {
     name                   = aws_lb.catalog_load-balancer.dns_name
     zone_id                = aws_lb.catalog_load-balancer.zone_id
-    evaluate_target_health = true
+    evaluate_target_health = false
   }
 }
 
@@ -626,7 +626,7 @@ resource "aws_route53_record" "orders_records" {
   alias {
     name                   = aws_lb.orders_load-balancer.dns_name
     zone_id                = aws_lb.orders_load-balancer.zone_id
-    evaluate_target_health = true
+    evaluate_target_health = false
   }
 }
 

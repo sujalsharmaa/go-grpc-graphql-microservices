@@ -41,8 +41,8 @@ docker build -f graphql/app.dockerfile -t graphql . || { echo "Docker build fail
 # Run Docker container
 echo "Running Docker container for GraphQL service..."
 docker run -d -p 80:8080 \
-  -e CATALOG_SERVICE_URL="catalog-load-balancer-1374832790.us-east-1.elb.amazonaws.com:80" \
-  -e ACCOUNT_SERVICE_URL="ac-lb-70580a135ed1d5e9.elb.us-east-1.amazonaws.com:80" \
+  -e CATALOG_SERVICE_URL="backend.catalog.com:80" \
+  -e ACCOUNT_SERVICE_URL="54.237.33.215:80" \
   -e ORDER_SERVICE_URL="backend.orders.com:80" \
   graphql || { echo "Failed to start Docker container!"; exit 1; }
 
