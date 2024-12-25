@@ -45,7 +45,7 @@ func initDbAccount(cfg Config) {
 		// Execute the SQL script
 		_, err = db.Exec(string(data))
 		if err != nil {
-			log.Fatalf("Failed to execute up.sql: %v", err)
+			log.Fatalf("Failed to execute up.sql: %v", err,data)
 		}
 
 		log.Println("Database initialization complete.")
