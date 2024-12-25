@@ -3,9 +3,8 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"time"
-	"io/ioutil"
+	"log"
 
 	"github.com/akhilsharma90/go-graphql-microservice/account"
 	"github.com/kelseyhightower/envconfig"
@@ -36,16 +35,16 @@ func initDbAccount(cfg Config) {
 		defer db.Close()
 
 		// Read the SQL script (you would load your actual up.sql file here)
-		sqlFile := "/usr/bin/up.sql" // Path to your SQL script file
-		data, err := ioutil.ReadFile(sqlFile)
-		if err != nil {
-			log.Fatalf("Failed to read up.sql: %s", err)
-		}
+		// sqlFile := "/usr/bin/up.sql" // Path to your SQL script file
+		// data, err := ioutil.ReadFile(sqlFile)
+		// if err != nil {
+		// 	log.Fatalf("Failed to read up.sql: %s", err)
+		// }
 
 		// Execute the SQL script
-		_, err = db.Exec(string(data))
+		db.Exec("CREATE TABLE IF NOT EXISTS accounts(id CHAR(27) PRIMARY KEY,name VARCHAR(24) NOT NULL);")
 		if err != nil {
-			log.Fatalf("Failed to execute up.sql: %v", err,data)
+			log.Fatalf("Failed to execute up.sql: %v", err)
 		}
 
 		log.Println("Database initialization complete.")
