@@ -281,7 +281,7 @@ resource "aws_route53_record" "accounts_record" {
   alias {
     name                   = aws_lb.accounts_load-balancer.dns_name
     zone_id                = aws_lb.accounts_load-balancer.zone_id
-    evaluate_target_health = true
+    evaluate_target_health = false
   }
 }
 
