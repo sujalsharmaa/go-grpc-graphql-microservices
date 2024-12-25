@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net" // Import net package for net.Listen
 	"net/http"
 	"time"
 	"google.golang.org/grpc"
-
 	"github.com/akhilsharma90/go-graphql-microservice/account"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/tinrab/retry"
@@ -69,7 +69,7 @@ func main() {
 			log.Fatalf("Failed to start gRPC server: %v", err)
 		}
 		grpcServer := grpc.NewServer()
-		account.RegisterServiceServer(grpcServer, s)
+		account.RegisterServiceServer(grpcServer, s) // Make sure this function is available from the generated code
 		log.Fatal(grpcServer.Serve(listener))
 	}()
 
