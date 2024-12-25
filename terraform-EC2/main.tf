@@ -140,7 +140,7 @@ resource "aws_key_pair" "monitoring-server-key-pair" {
 
 
 resource "aws_route53_zone" "backend_postgres_accounts" {
-  name = "backend.postgres.com"
+  name = "backend.com"
   vpc {
     vpc_id = aws_vpc.main.id
   }
@@ -148,14 +148,14 @@ resource "aws_route53_zone" "backend_postgres_accounts" {
 
 resource "aws_route53_record" "postgres_rds_accounts" {
   zone_id = aws_route53_zone.backend_postgres_accounts.zone_id
-  name    = "postgres.accounts.backend.com" # Using a subdomain
+  name    = "postgres.accounts" # Using a subdomain
   type    = "CNAME"
   ttl     = 300
   records = [replace(aws_db_instance.postgres-accounts.endpoint, ":5432", "")] # Remove the port number from endpoint
 }
 
 resource "aws_route53_zone" "backend_postgres_orders" {
-  name = "backend.postgres.in"
+  name = "backend.in"
   vpc {
     vpc_id = aws_vpc.main.id
   }
@@ -163,7 +163,7 @@ resource "aws_route53_zone" "backend_postgres_orders" {
 
 resource "aws_route53_record" "postgres_rds_orders" {
   zone_id = aws_route53_zone.backend_postgres_orders.zone_id
-  name    = "postgres.orders.backend.in" # Using a subdomain
+  name    = "postgres.orders" # Using a subdomain
   type    = "CNAME"
   ttl     = 300
   records = [replace(aws_db_instance.postgres-orders.endpoint, ":5432", "")] # Remove the port number from endpoint
@@ -727,3 +727,4 @@ resource "aws_autoscaling_group" "graphql_asg" {
   }
   depends_on = [ aws_launch_template.graphql_launch_template ]
 }
+

@@ -1,9 +1,11 @@
 #!/bin/bash
 
+set -e  # Exit immediately if a command exits with a non-zero status.
+
 # Update and install essential tools
 echo "Updating system and installing prerequisites..."
 apt-get update -y && apt-get upgrade -y
-apt-get install -y apt-transport-https ca-certificates curl software-properties-common gnupg lsb-release unzip
+apt-get install -y apt-transport-https ca-certificates curl software-properties-common gnupg lsb-release unzip git
 
 # Install Docker
 echo "Installing Docker..."
@@ -16,7 +18,7 @@ systemctl enable docker
 
 # Add user to Docker group
 echo "Adding user to Docker group..."
-usermod -aG docker ubuntu
+usermod -aG docker ubuntu || echo "Failed to add user to Docker group. Continuing as root."
 
 # Clean up unused packages
 apt-get autoremove -y
@@ -28,11 +30,8 @@ docker --version || { echo "Docker installation failed!"; exit 1; }
 
 # Clone repository
 REPO_URL="https://github.com/sujalsharmaa/go-grpc-graphql-microservices.git"
-REPO_DIR="go-grpc-graphql-microservices"
-
-echo "Cloning repository..."
 git clone -b features/cloud-and-devops-features "$REPO_URL" || { echo "Failed to clone repository!"; exit 1; }
-
+cd go-grpc-graphql-microservices
 
 # Build Docker image
 echo "Building Docker image..."
@@ -40,12 +39,13 @@ docker build -f order/app.dockerfile -t orders . || { echo "Docker build failed!
 
 # Run Docker container
 echo "Running Docker container..."
+docker run -d -p 80:8080 \
+  -e DATABASE_URL="postgres.orders.backend.in" \
+  -e ACCOUNT_SERVICE_URL="http://backend.accounts.com" \
+  -e ENV="prod" \
+  -e CATALOG_SERVICE_URL="http://backend.catalog.com" \
+  orders || { echo "Failed to start Docker container!"; exit 1; }
 
-echo "Setup complete! You can access the application on port 80."
-
-
-docker run -d -p 80:8080
-      -e DATABASE_URL="postgres.orders.backend.in" \
-      -e ACCOUNT_SERVICE_URL="http://backend.accounts.com" \
-      -e CATALOG_SERVICE_URL="http://backend.catalog.com"
-      orders || { echo 'Failed to start Docker container!'; exit 1; }
+# Verify container is running
+echo "Verifying Docker container..."
+docker ps | grep orders && echo "Setup complete! You can access the application on port 80." || { echo "Container did not start successfully!"; exit 1; }
