@@ -80,7 +80,7 @@ func main() {
 
 	// Initialize the database if necessary
 	if cfg.ENV == "prod" {
-		initDbAccount(cfg)
+		initDbOrder(cfg)
 		}
 
 	// Build the repository connection string
