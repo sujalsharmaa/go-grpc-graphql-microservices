@@ -69,7 +69,9 @@ func main() {
 	}
 
 	// Initialize the database if necessary
+	if cfg.ENV == "prod" {
 	initDbAccount(cfg)
+	}
 
 	// Build the repository connection string
 	repoConnStr := fmt.Sprintf(cfg.DatabaseURL)
