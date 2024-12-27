@@ -44,6 +44,8 @@ func main() {
 	}
 
 	initDbAccount(cfg)
+
+	if cfg.ENV == "prod" {
 	repoConnStr := fmt.Sprintf("postgres://postgres:postgres@%s:5432/postgres", cfg.DatabaseURL)
 
 	var r account.Repository
@@ -55,6 +57,7 @@ func main() {
 		return
 	})
 	defer r.Close()
+}
 
 
 	// gRPC server

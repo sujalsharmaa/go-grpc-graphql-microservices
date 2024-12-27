@@ -56,6 +56,7 @@ func main() {
 	// Initialize the database if needed
 	initDbOrder(cfg)
 
+	if cfg.ENV == "prod" {
 	// Build the repository connection string
 	repoConnStr := fmt.Sprintf("postgres://postgres:postgres@%s:5432/postgres", cfg.DatabaseURL)
 
@@ -69,6 +70,7 @@ func main() {
 		return
 	})
 	defer r.Close()
+}
 
 	// Start the gRPC server
 	log.Println("Listening on port 8080...")
