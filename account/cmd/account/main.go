@@ -23,7 +23,10 @@ func initDbAccount(cfg Config) {
 	if cfg.ENV == "prod" {
 		log.Println("Initializing the database...")
 
+		// Build the database connection string
 		connStr := fmt.Sprintf("postgres://postgres:postgres@%s:5432/postgres", cfg.DatabaseURL)
+
+		// Connect to the database
 		db, err := sql.Open("postgres", connStr)
 		if err != nil {
 			log.Fatalf("Could not connect to the database: %v", err)
@@ -50,27 +53,25 @@ func main() {
 	var cfg Config
 	err := envconfig.Process("", &cfg)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Failed to load configuration: %v", err)
 	}
 
 	// Initialize database if necessary
 	initDbAccount(cfg)
 
-	var r account.Repository
-	if cfg.ENV == "prod" {
-		// Build the repository connection string
-		repoConnStr := fmt.Sprintf("postgres://postgres:postgres@%s:5432/postgres", cfg.DatabaseURL)
+	// Build the repository connection string
+	repoConnStr := fmt.Sprintf("postgres://postgres:postgres@%s:5432/postgres", cfg.DatabaseURL)
 
-		// Retry connecting to the repository
-		retry.ForeverSleep(2*time.Second, func(_ int) (err error) {
-			r, err = account.NewPostgresRepository(repoConnStr)
-			if err != nil {
-				log.Println("Retrying connection to repository:", err)
-			}
-			return err
-		})
-		defer r.Close()
-	}
+	// Create repository and retry on failure
+	var r account.Repository
+	retry.ForeverSleep(2*time.Second, func(_ int) (err error) {
+		r, err = account.NewPostgresRepository(repoConnStr)
+		if err != nil {
+			log.Println("Retrying connection to repository:", err)
+		}
+		return err
+	})
+	defer r.Close()
 
 	// Create and start the gRPC service
 	s := account.NewService(r)

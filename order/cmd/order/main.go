@@ -69,21 +69,19 @@ func main() {
 	// Initialize the database if necessary
 	initDbOrder(cfg)
 
-	var r order.Repository
-	if cfg.ENV == "prod" {
-		// Build the repository connection string
-		repoConnStr := fmt.Sprintf("postgres://postgres:postgres@%s:5432/postgres", cfg.DatabaseURL)
+	// Build the repository connection string
+	repoConnStr := fmt.Sprintf("postgres://postgres:postgres@%s:5432/postgres", cfg.DatabaseURL)
 
-		// Retry connecting to the repository
-		retry.ForeverSleep(2*time.Second, func(_ int) (err error) {
-			r, err = order.NewPostgresRepository(repoConnStr)
-			if err != nil {
-				log.Println("Retrying connection to repository:", err)
-			}
-			return err
-		})
-		defer r.Close()
-	}
+	// Retry connecting to the repository
+	var r order.Repository
+	retry.ForeverSleep(2*time.Second, func(_ int) (err error) {
+		r, err = order.NewPostgresRepository(repoConnStr)
+		if err != nil {
+			log.Println("Retrying connection to repository:", err)
+		}
+		return err
+	})
+	defer r.Close()
 
 	// Create and start the gRPC service
 	s := order.NewService(r)
