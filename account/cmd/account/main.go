@@ -72,7 +72,7 @@ func main() {
 	initDbAccount(cfg)
 
 	// Build the repository connection string
-	repoConnStr := fmt.Sprintf("postgres://postgres:postgres@%s:5432/postgres", cfg.DatabaseURL)
+	repoConnStr := fmt.Sprintf(cfg.DatabaseURL)
 
 	// Create repository and retry on failure
 	var r account.Repository
