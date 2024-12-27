@@ -22,6 +22,8 @@ WORKDIR /usr/bin
 # Copy the binary from the build stage
 COPY --from=build /go/bin/app .
 
+ENV ENV="dev"
+
 
 # Expose the application port
 EXPOSE 8080
