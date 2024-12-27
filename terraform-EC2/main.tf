@@ -199,7 +199,7 @@ resource "aws_launch_template" "accounts_launch_template" {
   lifecycle {
     # create_before_destroy = true
   }
-  depends_on = [aws_db_instance.postgres-accounts, aws_db_instance.postgres-orders]
+  depends_on = [aws_db_instance.postgres-accounts]
 }
 
 resource "aws_lb_target_group" "accounts_service_tg" {
@@ -228,7 +228,7 @@ resource "aws_lb" "accounts_load-balancer" {
 resource "aws_lb_listener" "http_accounts" {
   load_balancer_arn = aws_lb.accounts_load-balancer.arn
   port              = 80
-  protocol          = "HTTP"
+  protocol          = "TCP"
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.accounts_service_tg.arn
@@ -314,13 +314,13 @@ resource "aws_launch_template" "ElasticSearch_launch_template" {
   lifecycle {
     # create_before_destroy = true
   }
-  depends_on = [aws_db_instance.postgres-accounts, aws_db_instance.postgres-orders]
+  depends_on = [aws_db_instance.postgres-accounts]
 }
 
 resource "aws_lb_target_group" "ElasticSearch_service_tg" {
   name     = "ElasticSearch-service-tg"
   port     = 80
-  protocol = "HTTP"
+  protocol = "TCP"
   vpc_id   = aws_vpc.main.id
   tags = {
     Name        = "ElasticSearch-target-group"
@@ -331,7 +331,7 @@ resource "aws_lb_target_group" "ElasticSearch_service_tg" {
 resource "aws_lb" "ElasticSearch_load-balancer" {
   name               = "ElasticSearch-load-balancer"
   internal           = false
-  load_balancer_type = "application"
+  load_balancer_type = "network"
   security_groups    = [aws_security_group.ec2_sg.id]
   subnets            = [aws_subnet.public-zone1.id, aws_subnet.public-zone2.id]
   tags = {
@@ -343,7 +343,7 @@ resource "aws_lb" "ElasticSearch_load-balancer" {
 resource "aws_lb_listener" "http_ElasticSearch" {
   load_balancer_arn = aws_lb.ElasticSearch_load-balancer.arn
   port              = 80
-  protocol          = "HTTP"
+  protocol          = "TCP"
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.ElasticSearch_service_tg.arn
@@ -429,7 +429,7 @@ resource "aws_launch_template" "catalog_launch_template" {
   lifecycle {
     # create_before_destroy = true
   }
-  depends_on = [aws_db_instance.postgres-accounts, aws_db_instance.postgres-orders]
+  depends_on = [aws_db_instance.postgres-accounts]
 }
 
 resource "aws_lb_target_group" "catalog_service_tg" {
@@ -458,7 +458,7 @@ resource "aws_lb" "catalog_load-balancer" {
 resource "aws_lb_listener" "http_catalog" {
   load_balancer_arn = aws_lb.catalog_load-balancer.arn
   port              = 80
-  protocol          = "HTTP"
+  protocol          = "TCP"
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.catalog_service_tg.arn
@@ -544,7 +544,7 @@ resource "aws_launch_template" "orders_launch_template" {
   lifecycle {
     # create_before_destroy = true
   }
-  depends_on = [aws_db_instance.postgres-accounts, aws_db_instance.postgres-orders]
+  depends_on = [aws_db_instance.postgres-accounts]
 }
 
 resource "aws_lb_target_group" "orders_service_tg" {
@@ -573,7 +573,7 @@ resource "aws_lb" "orders_load-balancer" {
 resource "aws_lb_listener" "http_orders" {
   load_balancer_arn = aws_lb.orders_load-balancer.arn
   port              = 80
-  protocol          = "HTTP"
+  protocol          = "TCP"
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.orders_service_tg.arn
@@ -659,7 +659,7 @@ resource "aws_launch_template" "graphql_launch_template" {
   lifecycle {
     # create_before_destroy = true
   }
-  depends_on = [aws_db_instance.postgres-accounts, aws_db_instance.postgres-orders]
+  depends_on = [aws_db_instance.postgres-accounts]
 }
 
 resource "aws_lb_target_group" "graphql_service_tg" {
@@ -688,7 +688,7 @@ resource "aws_lb" "graphql_load-balancer" {
 resource "aws_lb_listener" "http_graphql" {
   load_balancer_arn = aws_lb.graphql_load-balancer.arn
   port              = 80
-  protocol          = "HTTP"
+  protocol          = "TCP"
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.graphql_service_tg.arn
@@ -727,4 +727,11 @@ resource "aws_autoscaling_group" "graphql_asg" {
   }
   depends_on = [ aws_launch_template.graphql_launch_template ]
 }
+
+output "ip_address_graphql" {
+  value = aws_lb.graphql_load-balancer.dns_name
+  depends_on = [ aws_lb.graphql_load-balancer ]
+}
+
+
 

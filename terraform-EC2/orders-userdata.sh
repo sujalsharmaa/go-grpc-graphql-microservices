@@ -41,9 +41,9 @@ docker build -f order/app.dockerfile -t orders . || { echo "Docker build failed!
 echo "Running Docker container..."
 docker run -d -p 80:8080 \
   -e DATABASE_URL="postgres.orders.backend.in" \
-  -e ACCOUNT_SERVICE_URL="http://backend.accounts.com" \
+  -e ACCOUNT_SERVICE_URL="backend.accounts.com:80" \
   -e ENV="prod" \
-  -e CATALOG_SERVICE_URL="http://backend.catalog.com" \
+  -e CATALOG_SERVICE_URL="backend.catalog.com:80" \
   orders || { echo "Failed to start Docker container!"; exit 1; }
 
 # Verify container is running

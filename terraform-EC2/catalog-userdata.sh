@@ -42,4 +42,4 @@ echo "Running Docker container..."
 
 echo "Setup complete! You can access the application on port 80."
 
-docker run -d -p 80:8080 -e ELASTICSEARCH_DB_URL=http://backend.elasticSearch.com catalog || { echo 'Failed to start Docker container!'; exit 1; }
+docker run -d -p 80:8080 -e DATABASE_URL="http://backend.elasticSearch.com" catalog || { echo 'Failed to start Docker container!'; exit 1; }
