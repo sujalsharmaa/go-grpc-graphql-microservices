@@ -20,22 +20,34 @@ type Config struct {
 	ENV         string `envconfig:"ENV"`
 }
 
-// initDbOrder initializes the database for production environment
+// initDbOrder initializes the database for the production environment
 func initDbOrder(cfg Config) {
 	if cfg.ENV == "prod" {
 		log.Println("Initializing the database...")
 
-		// Build the database connection string
 		connStr := fmt.Sprintf("postgres://postgres:postgres@%s:5432/postgres", cfg.DatabaseURL)
 
-		// Connect to the database
-		db, err := sql.Open("postgres", connStr)
-		if err != nil {
-			log.Fatalf("Could not connect to the database: %v", err)
-		}
+		var db *sql.DB
+		var err error
+
+		// Retry connecting to the database
+		retry.ForeverSleep(2*time.Second, func(_ int) error {
+			db, err = sql.Open("postgres", connStr)
+			if err != nil {
+				log.Println("Retrying database connection:", err)
+				return err
+			}
+
+			// Ping the database to ensure the connection is valid
+			if pingErr := db.Ping(); pingErr != nil {
+				log.Println("Retrying database ping:", pingErr)
+				return pingErr
+			}
+			return nil
+		})
 		defer db.Close()
 
-		// Execute the SQL script to create tables
+		// Execute SQL script to create tables
 		_, err = db.Exec(`
 			CREATE TABLE IF NOT EXISTS orders (
 				id CHAR(27) PRIMARY KEY,
@@ -63,7 +75,7 @@ func main() {
 	var cfg Config
 	err := envconfig.Process("", &cfg)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Failed to load configuration: %v", err)
 	}
 
 	// Initialize the database if necessary
