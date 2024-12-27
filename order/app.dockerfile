@@ -25,11 +25,12 @@ FROM alpine:3.11
 
 # Set the working directory
 WORKDIR /usr/bin
+ENV ENV="dev"
 
 # Copy the binary from the build stage
 COPY --from=build /go/bin/app .
 
-ENV ENV="dev"
+
 # Expose the application port
 EXPOSE 8080
 
