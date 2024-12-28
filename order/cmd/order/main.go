@@ -14,7 +14,7 @@ import (
 
 // Config struct that reads environment variables
 type Config struct {
-	DatabaseURL string `envconfig:"DATABASE_URL"`
+	DatabaseURL string `envconfig:"DATABASE_URL_ORDER"`
 	AccountURL  string `envconfig:"ACCOUNT_SERVICE_URL"`
 	CatalogURL  string `envconfig:"CATALOG_SERVICE_URL"`
 	ENV         string `envconfig:"ENV"`

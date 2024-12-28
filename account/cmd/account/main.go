@@ -13,7 +13,7 @@ import (
 )
 
 type Config struct {
-	DatabaseURL string `envconfig:"DATABASE_URL"`
+	DatabaseURL string `envconfig:"DATABASE_URL_ACCOUNT"`
 	ENV         string `envconfig:"ENV"`
 }
 

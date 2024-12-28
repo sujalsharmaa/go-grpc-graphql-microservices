@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecommerce-config
+data:
+  ENV: "prod"
+  DATABASE_URL_ACCOUNT: "postgres.accounts.backend.com"
+  DATABASE_URL_ORDER: "postgres.orders.backend.in"
+  ACCOUNT_SERVICE_URL: "http://backend-account-service"
+  CATALOG_SERVICE_URL: "http://backend-catalog-service"
+  DATABASE_URL: "http://backend-elasticSearch-service"
+  ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+  discovery.type: "single-node"
+  ORDER_SERVICE_URL: "http://backend-order-service"
+
+  # FRONTEND_URL: "https://frontend-service.default.svc.cluster.local:3001"

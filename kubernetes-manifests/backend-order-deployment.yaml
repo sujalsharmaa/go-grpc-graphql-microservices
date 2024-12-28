@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-order-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-order-deployment
+  template:
+    metadata:
+      labels:
+        app: backend-order-deployment
+    spec:
+      containers:
+        - name: backend-order-deployment-container
+          image: sujalsharma/backend-order-deployment:v1
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: ecommerce-config

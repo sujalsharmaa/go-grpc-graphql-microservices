@@ -44,7 +44,7 @@ docker build -f account/app.dockerfile -t accounts . || { echo "Docker build for
 echo "Running Docker container for the accounts service..."
 docker run -d -p 80:8080 \
   -e ENV="prod" \
-  -e DATABASE_URL="postgres.accounts.backend.com" \
+  -e DATABASE_URL_ACCOUNT="postgres.accounts.backend.com" \
   accounts || { echo "Failed to start Docker container for accounts!"; exit 1; }
 
 echo "Setup complete! The accounts service is running on port 8080."

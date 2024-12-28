@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-graphql-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-graphql-deployment
+  template:
+    metadata:
+      labels:
+        app: backend-graphql-deployment
+    spec:
+      containers:
+        - name: backend-graphql-deployment-container
+          image: sujalsharma/backend-graphql-deployment:v1
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: ecommerce-config
