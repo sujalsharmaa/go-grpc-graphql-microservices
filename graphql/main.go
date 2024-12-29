@@ -29,5 +29,8 @@ func main() {
 	http.Handle("/graphql", handler.GraphQL(s.ToExecutableSchema()))
 	http.Handle("/playground", handler.Playground("akhil", "/graphql"))
 
+	log.Printf("GraphQL server is running on port 8080 and using AccountURL: %s, CatalogURL: %s, OrderURL: %s", cfg.AccountURL, cfg.CatalogURL, cfg.OrderURL)
+
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
+
