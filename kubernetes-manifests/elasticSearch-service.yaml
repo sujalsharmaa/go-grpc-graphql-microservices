@@ -7,7 +7,7 @@ spec:
     app: backend-elasticsearch
   ports:
     - protocol: TCP
-      port: 80
+      port: 9200
       targetPort: 80
       name: http
     - protocol: TCP
