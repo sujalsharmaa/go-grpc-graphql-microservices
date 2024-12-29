@@ -817,7 +817,7 @@ resource "aws_eks_node_group" "devopsshack" {
   subnet_ids      =  [ aws_subnet.public-zone1.id,aws_subnet.public-zone2.id ]
 
   scaling_config {
-    desired_size = 3
+    desired_size = 1
     max_size     = 3
     min_size     = 3
   }

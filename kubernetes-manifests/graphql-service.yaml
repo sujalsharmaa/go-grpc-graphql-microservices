@@ -6,7 +6,7 @@ spec:
   selector:
     app: backend-graphql-service
   ports:
-    - protocol: TCP
-      port: 8080
+    - protocol: HTTP
+      port: 80
       targetPort: 8080
   type: LoadBalancer

@@ -4,7 +4,6 @@ package main
 import (
 	"log"
 	"net/http"
-
 	"github.com/99designs/gqlgen/handler"
 	"github.com/kelseyhightower/envconfig"
 )
