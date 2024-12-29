@@ -16,7 +16,7 @@ spec:
         - name: backend-graphql-deployment-container
           image: sujalsharma/backend-graphql-deployment:v1
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           envFrom:
             - configMapRef:
                 name: ecommerce-config
