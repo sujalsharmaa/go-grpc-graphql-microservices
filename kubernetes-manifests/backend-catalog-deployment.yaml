@@ -16,7 +16,7 @@ spec:
         - name: backend-catalog-deployment-container
           image: sujalsharma/backend-catalog-deployment:v1
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           envFrom:
             - configMapRef:
                 name: ecommerce-config
