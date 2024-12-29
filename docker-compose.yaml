@@ -18,7 +18,7 @@ services:
     depends_on:
       - catalog_db
     environment:
-      DATABASE_URL_ORDER: http://catalog_db:9200
+      DATABASE_URL: http://catalog_db:9200
     restart: on-failure
 
   order:
@@ -28,7 +28,7 @@ services:
     depends_on:
       - order_db
     environment:
-      DATABASE_URL: postgres://akhil:123456@order_db/akhil?sslmode=disable
+      DATABASE_URL_ORDER: postgres://akhil:123456@order_db/akhil?sslmode=disable
       ACCOUNT_SERVICE_URL: account:8080
       CATALOG_SERVICE_URL: catalog:8080
     restart: on-failure
