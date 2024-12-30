@@ -6,7 +6,7 @@ spec:
   hosts:
     - "*"  # Replace with your domain or use *
   gateways:
-    - backend-graphql-service
+    - backend-graphql-gateway
   http:
     - match:
         - uri:
