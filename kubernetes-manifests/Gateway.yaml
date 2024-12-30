@@ -9,6 +9,6 @@ spec:
     - port:
         number: 80
         name: http
-        protocol: TCP
+        protocol: HTTP
       hosts:
         - "*"  # Replace with your domain or use *
