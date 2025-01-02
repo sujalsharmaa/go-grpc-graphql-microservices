@@ -5,7 +5,7 @@ metadata:
   namespace: ecommerce-app
 spec:
   selector:
-    app: backend-order-service
+    app: backend-order-deployment
   ports:
     - protocol: TCP
       port: 80
