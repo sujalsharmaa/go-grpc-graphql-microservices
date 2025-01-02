@@ -1,11 +1,11 @@
+# ConfigMap for Application Configuration
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ecommerce-config
+  namespace: ecommerce-app
 data:
   ENV: "prod"
-  DATABASE_URL_ACCOUNT: "postgres.accounts.backend.com"
-  DATABASE_URL_ORDER: "postgres.orders.backend.in"
   ACCOUNT_SERVICE_URL: "backend-account-service:80"
   CATALOG_SERVICE_URL: "backend-catalog-service:80"
   DATABASE_URL: "http://backend-elasticsearch-service:9200"

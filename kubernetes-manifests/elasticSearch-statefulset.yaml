@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: backend-elasticsearch-statefulset
+  namespace: ecommerce-app
 spec:
   replicas: 2
   selector:
@@ -24,3 +25,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: ecommerce-config
+          volumeMounts:
+            - name: backend-account-volume
+              mountPath: /data # Path inside the container where the volume is mounted
+      volumes:
+        - name: backend-account-volume
+          persistentVolumeClaim:
+            claimName: backend-account-pvc                

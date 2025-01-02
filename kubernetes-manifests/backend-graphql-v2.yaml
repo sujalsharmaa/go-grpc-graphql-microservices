@@ -1,21 +1,24 @@
+# graphql-v2-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-catalog-deployment
+  name: backend-graphql-v2
   namespace: ecommerce-app
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: backend-catalog-deployment
+      app: backend-graphql
+      version: v2
   template:
     metadata:
       labels:
-        app: backend-catalog-deployment
+        app: backend-graphql
+        version: v2
     spec:
       containers:
-        - name: backend-catalog-deployment-container
-          image: sujalsharma/backend-catalog-deployment:v1
+        - name: backend-graphql
+          image: sujalsharma/backend-graphql-deployment:v2
           ports:
             - containerPort: 8080
           envFrom:
@@ -27,4 +30,4 @@ spec:
       volumes:
         - name: backend-account-volume
           persistentVolumeClaim:
-            claimName: backend-account-pvc
+            claimName: backend-account-pvc                

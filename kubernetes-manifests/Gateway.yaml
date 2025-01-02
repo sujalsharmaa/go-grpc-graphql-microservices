@@ -1,7 +1,9 @@
+# gateway.yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: backend-graphql-gateway
+  namespace: ecommerce-app
 spec:
   selector:
     istio: ingressgateway
@@ -11,4 +13,4 @@ spec:
         name: http
         protocol: HTTP
       hosts:
-        - "*"  # Replace with your domain or use *
+        - "*"
