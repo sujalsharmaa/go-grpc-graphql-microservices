@@ -1,33 +1,33 @@
-# service-account.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: app-service-account
-  namespace: ecommerce-app
----
-# cluster-role.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: app-cluster-role
-rules:
-  - apiGroups: [""]
-    resources: ["pods", "services", "endpoints", "configmaps", "secrets"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: [""]
-    resources: ["persistentvolumeclaims", "persistentvolumes"]
-    verbs: ["create", "delete", "get", "list", "watch", "update"]
----
-# cluster-role-binding.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: app-cluster-role-binding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: app-cluster-role
-subjects:
-  - kind: ServiceAccount
-    name: app-service-account
-    namespace: ecommerce-app
+# # service-account.yaml
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   name: app-service-account
+#   namespace: ecommerce-app
+# ---
+# # cluster-role.yaml
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRole
+# metadata:
+#   name: app-cluster-role
+# rules:
+#   - apiGroups: [""]
+#     resources: ["pods", "services", "endpoints", "configmaps", "secrets"]
+#     verbs: ["get", "list", "watch"]
+#   - apiGroups: [""]
+#     resources: ["persistentvolumeclaims", "persistentvolumes"]
+#     verbs: ["create", "delete", "get", "list", "watch", "update"]
+# ---
+# # cluster-role-binding.yaml
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRoleBinding
+# metadata:
+#   name: app-cluster-role-binding
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: app-cluster-role
+# subjects:
+#   - kind: ServiceAccount
+#     name: app-service-account
+#     namespace: ecommerce-app
