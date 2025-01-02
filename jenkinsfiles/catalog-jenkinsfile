@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Checkout Code') {
             steps {
-                git branch: 'main', credentialsId: 'features/cloud-and-devops-features', url: 'https://github.com/sujalsharmaa/go-grpc-graphql-microservices.git'
+                git branch: 'mafeatures/cloud-and-devops-featuresin', credentialsId: 'github-cred', url: 'https://github.com/sujalsharmaa/go-grpc-graphql-microservices.git'
             }
         }
         stage('Trivy File Scan') {
