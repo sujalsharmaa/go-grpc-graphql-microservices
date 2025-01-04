@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-catalog-deployment
+  namespace: ecommerce-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-catalog-deployment
+  template:
+    metadata:
+      labels:
+        app: backend-catalog-deployment
+    spec:
+      containers:
+        - name: backend-catalog-deployment-container
+          image: sujalsharma/backend-catalog-deployment:v1
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: ecommerce-config
+      #     volumeMounts:
+      #       - name: backend-account-volume
+      #         mountPath: /data # Path inside the container where the volume is mounted
+      # volumes:
+      #   - name: backend-account-volume
+      #     persistentVolumeClaim:
+      #       claimName: backend-account-pvc

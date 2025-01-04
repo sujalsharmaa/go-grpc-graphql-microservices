@@ -18,6 +18,24 @@ pipeline {
                 git branch: 'mafeatures/cloud-and-devops-featuresin', credentialsId: 'github-cred', url: 'https://github.com/sujalsharmaa/go-grpc-graphql-microservices.git'
             }
         }
+        stage('Sonarqube Analysis') {
+            steps {
+                dir('catalog/') {
+                    withSonarQubeEnv('sonar-server') {
+                        sh ''' $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=ecommerce-dev \
+                        -Dsonar.projectKey=ecommerce-dev '''
+                    }
+                }
+            }
+        }          
+        stage('Quality Check') {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
+                }
+            }
+        }        
         stage('Trivy File Scan') {
             steps {
                 dir('catalog/') {

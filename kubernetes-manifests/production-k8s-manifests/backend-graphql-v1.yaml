@@ -1,0 +1,34 @@
+# graphql-v1-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-graphql-v1
+  namespace: ecommerce-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-graphql
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: backend-graphql
+        version: v1
+    spec:
+      containers:
+        - name: backend-graphql
+          image: sujalsharma/backend-graphql-deployment:v2
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: ecommerce-config
+
+      #     volumeMounts:
+      #       - name: backend-account-volume
+      #         mountPath: /data # Path inside the container where the volume is mounted
+      # volumes:
+      #   - name: backend-account-volume
+      #     persistentVolumeClaim:
+      #       claimName: backend-account-pvc                

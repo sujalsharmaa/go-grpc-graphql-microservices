@@ -1,10 +1,10 @@
 pipeline {
-    agent any 
+    agent any
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
         REPOSITORY_URI = "sujalsharma"
         imageName = "backend-account-deployment"
-        imageTag = "v${BUILD_NUMBER}"
+        imageTag = "vx${BUILD_NUMBER}"
         REPO_NAME = "go-grpc-graphql-microservices"
     }
     stages {
@@ -18,9 +18,20 @@ pipeline {
                 git branch: 'features/cloud-and-devops-features', credentialsId: 'github-cred', url: 'https://github.com/sujalsharmaa/go-grpc-graphql-microservices.git'
             }
         }
-        stage('Trivy File Scan') {
+        stage('Sonarqube Analysis') {
             steps {
                 dir('account/') {
+                    withSonarQubeEnv('sonar-server') {
+                        sh ''' $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=account-backend \
+                        -Dsonar.projectKey=account-backend '''
+                    }
+                }
+            }
+        }
+        stage('Trivy File Scan') {
+            steps {
+                dir('go-grpc-graphql-microservices/account') {
                     sh 'trivy fs . > trivyfs-${BUILD_NUMBER}.txt'
                 }
             }
@@ -28,16 +39,17 @@ pipeline {
         stage('Docker Image Build and Push') {
             steps {
                 script {
-                    def dockerRegistry = "docker.io/sujalsharma"
+                    def dockerRegistry = "docker.io"
                     echo "Building Docker Image: ${imageName}:${imageTag}"
 
-                    dir('account/') {
+                    dir('./') {
                         sh 'docker system prune -f || true'
                         sh "docker build -f account/app.dockerfile -t ${REPOSITORY_URI}/${imageName}:${imageTag} ."
 
                         withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                             sh '''
                             echo "$DOCKER_PASSWORD" | docker login ${dockerRegistry} -u "$DOCKER_USERNAME" --password-stdin
+                            docker tag ${imageName}:${imageTag} ${REPOSITORY_URI}/${imageName}:${imageTag}
                             docker push ${REPOSITORY_URI}/${imageName}:${imageTag}
                             docker logout
                             '''
@@ -51,23 +63,54 @@ pipeline {
                 sh "trivy image ${REPOSITORY_URI}/${imageName}:${imageTag} > trivyimage-${BUILD_NUMBER}.txt"
             }
         }
-        stage('Update Deployment File') {
+        stage('Update Dev Deployment File') {
             environment {
                 GIT_REPO_NAME = "go-grpc-graphql-microservices"
                 GIT_USER_NAME = "sujalsharmaa"
             }
             steps {
-                dir('kubernetes-manifests') {
+                dir('./kubernetes-manifests/dev-k8s-manifests') {
                     withCredentials([string(credentialsId: 'github-cred', variable: 'GITHUB_TOKEN')]) {
                         sh '''
+                            git config user.email "sujalsharma151@gmail.com"
+                            git config user.name "sujalsharmaa"
                             BUILD_NUMBER=${BUILD_NUMBER}
                             echo $BUILD_NUMBER
-                            imageTag=$(grep -oP '(?<=urlshortner:)[^ ]+' frontend-deployment.yaml)
+                            imageTag=$(grep -oP '(?<=backend-account-deployment:)[^ ]+' backend-account-deployment.yaml)
                             echo $imageTag
-                            sed -i "s/${REPOSITORY_URI}/${imageName}:${imageTag}/${REPOSITORY_URI}/${imageName}:${BUILD_NUMBER}/" backend-account-deployment.yaml
+                            sed -i "s|${REPOSITORY_URI}/${imageName}:${imageTag}|${REPOSITORY_URI}/${imageName}:${BUILD_NUMBER}|" backend-account-deployment.yaml
                             git add backend-account-deployment.yaml
-                            git commit -m "Update deployment Image to version \${BUILD_NUMBER}"
-                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:features/cloud-and-devops-features
+                            git commit -m "Update deployment Image to version ${BUILD_NUMBER} [skip ci]"
+                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${REPO_NAME} HEAD:features/cloud-and-devops-features
+                        '''
+                    }
+                }
+            }
+        }
+        stage('Manual Approval for Production') {
+            steps {
+                input message: 'Should we proceed with deploying to production?', ok: 'Deploy to Production'
+            }
+        }
+        stage('Update Production Deployment File') {
+            environment {
+                GIT_REPO_NAME = "go-grpc-graphql-microservices"
+                GIT_USER_NAME = "sujalsharmaa"
+            }
+            steps {
+                dir('./kubernetes-manifests/production-k8s-manifests') {
+                    withCredentials([string(credentialsId: 'github-cred', variable: 'GITHUB_TOKEN')]) {
+                        sh '''
+                            git config user.email "sujalsharma151@gmail.com"
+                            git config user.name "sujalsharmaa"
+                            BUILD_NUMBER=${BUILD_NUMBER}
+                            echo $BUILD_NUMBER
+                            imageTag=$(grep -oP '(?<=backend-account-deployment:)[^ ]+' backend-account-deployment.yaml)
+                            echo $imageTag
+                            sed -i "s|${REPOSITORY_URI}/${imageName}:${imageTag}|${REPOSITORY_URI}/${imageName}:${BUILD_NUMBER}|" backend-account-deployment.yaml
+                            git add backend-account-deployment.yaml
+                            git commit -m "Update deployment Image to version ${BUILD_NUMBER} [skip ci]"
+                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${REPO_NAME} HEAD:features/cloud-and-devops-features
                         '''
                     }
                 }
