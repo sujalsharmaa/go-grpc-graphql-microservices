@@ -24,11 +24,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: ecommerce-config
-
-      #     volumeMounts:
-      #       - name: backend-account-volume
-      #         mountPath: /data # Path inside the container where the volume is mounted
-      # volumes:
-      #   - name: backend-account-volume
-      #     persistentVolumeClaim:
-      #       claimName: backend-account-pvc                
+          volumeMounts:
+            - name: backend-graphql-volume
+              mountPath: /data # Path inside the container where the volume is mounted
+      volumes:
+        - name: backend-graphql-volume
+          persistentVolumeClaim:
+            claimName: ebs-claim-graphql               

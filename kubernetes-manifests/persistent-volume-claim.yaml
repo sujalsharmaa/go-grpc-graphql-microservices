@@ -1,12 +1,67 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: backend-account-pvc
-  namespace: ecommerce-app
+  name: ebs-claim-account
 spec:
-  storageClassName: ebs-sc
   accessModes:
     - ReadWriteOnce
+  storageClassName: ebs-gp3
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-claim-order
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ebs-gp3
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-claim-elasticSearch
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ebs-gp3
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-claim-graphql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ebs-gp3
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-claim-catalog
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ebs-gp3
   resources:
     requests:
       storage: 10Gi
