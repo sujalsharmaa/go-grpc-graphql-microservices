@@ -9,10 +9,10 @@ import (
 	"github.com/akhilsharma90/go-graphql-microservice/order"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/tinrab/retry"
-	_ "github.com/lib/pq" // PostgreSQL driver
+	_ "github.com/lib/pq"
 )
 
-// Config struct that reads environment variables
+
 type Config struct {
 	DatabaseURL string `envconfig:"DATABASE_URL_ORDER"`
 	AccountURL  string `envconfig:"ACCOUNT_SERVICE_URL"`
@@ -20,7 +20,6 @@ type Config struct {
 	ENV         string `envconfig:"ENV"`
 }
 
-// getConnectionString returns the connection string based on the environment
 func getConnectionString(cfg Config) (string, error) {
 	switch cfg.ENV {
 	case "prod":
@@ -32,7 +31,6 @@ func getConnectionString(cfg Config) (string, error) {
 	}
 }
 
-// initDb initializes the database based on the provided configuration
 func initDb(cfg Config) {
 	connStr, err := getConnectionString(cfg)
 	if err != nil {
@@ -42,7 +40,6 @@ func initDb(cfg Config) {
 	log.Printf("Initializing the database for environment: %s...\n", cfg.ENV)
 	var db *sql.DB
 
-	// Retry connecting to the database
 	retry.ForeverSleep(2*time.Second, func(_ int) error {
 		db, err = sql.Open("postgres", connStr)
 		if err != nil {
@@ -50,7 +47,6 @@ func initDb(cfg Config) {
 			return err
 		}
 
-		// Ping the database to ensure the connection is valid
 		if pingErr := db.Ping(); pingErr != nil {
 			log.Println("Retrying database ping:", pingErr)
 			return pingErr
@@ -59,7 +55,7 @@ func initDb(cfg Config) {
 	})
 	defer db.Close()
 
-	// Execute SQL script to create tables
+
 	_, err = db.Exec(`
 		CREATE TABLE IF NOT EXISTS orders (
 			id CHAR(27) PRIMARY KEY,
@@ -81,7 +77,6 @@ func initDb(cfg Config) {
 	log.Println("Database initialization complete.")
 }
 
-// startService sets up the repository and starts the gRPC service
 func startService(cfg Config) {
 	connStr, err := getConnectionString(cfg)
 	if err != nil {
@@ -90,7 +85,6 @@ func startService(cfg Config) {
 
 	var r order.Repository
 
-	// Retry connecting to the repository
 	retry.ForeverSleep(2*time.Second, func(_ int) error {
 		r, err = order.NewPostgresRepository(connStr)
 		if err != nil {
@@ -100,23 +94,19 @@ func startService(cfg Config) {
 	})
 	defer r.Close()
 
-	// Create and start the gRPC service
+
 	s := order.NewService(r)
 	log.Println("Listening on port 8080 for gRPC...")
 	log.Fatal(order.ListenGRPC(s, cfg.AccountURL, cfg.CatalogURL, 8080))
 }
 
 func main() {
-	// Load configuration from environment variables
 	var cfg Config
 	err := envconfig.Process("", &cfg)
 	if err != nil {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
 
-	// Initialize the database
 	initDb(cfg)
-
-	// Start the gRPC service
 	startService(cfg)
 }
