@@ -8,23 +8,6 @@ pipeline {
         REPO_NAME = "go-grpc-graphql-microservices"
     }
     stages {
-        stage('Check Commit Message') {
-            steps {
-             script {
-            // Fetch the latest commit message
-            def commitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
-            echo "Commit Message: ${commitMessage}"
-
-            // Check for [skip ci] in the commit message (case-insensitive)
-            if (commitMessage.toLowerCase().contains('[skip ci]')) {
-                echo "Skipping build due to [skip ci] in commit message"
-                currentBuild.result = 'ABORTED'
-                error('Build aborted due to [skip ci]')
-            }
-        }
-    }
-}
-
         stage('Clean Workspace') {
             steps {
                 cleanWs()
@@ -96,7 +79,7 @@ pipeline {
                             echo $imageTag
                             sed -i "s|${REPOSITORY_URI}/${imageName}:${imageTag}|${REPOSITORY_URI}/${imageName}:${BUILD_NUMBER}|" backend-account-deployment.yaml
                             git add backend-account-deployment.yaml
-                            git commit -m "Update deployment Image to version ${BUILD_NUMBER} [skip ci]"
+                            git commit -m "Update deployment Image to version ${BUILD_NUMBER}"
                             git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${REPO_NAME} HEAD:features/cloud-and-devops-features
                         '''
                     }
@@ -125,7 +108,7 @@ pipeline {
                             echo $imageTag
                             sed -i "s|${REPOSITORY_URI}/${imageName}:${imageTag}|${REPOSITORY_URI}/${imageName}:${BUILD_NUMBER}|" backend-account-deployment.yaml
                             git add backend-account-deployment.yaml
-                            git commit -m "Update deployment Image to version ${BUILD_NUMBER} [skip ci]"
+                            git commit -m "Update deployment Image to version ${BUILD_NUMBER}"
                             git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${REPO_NAME} HEAD:features/cloud-and-devops-features
                         '''
                     }
