@@ -49,7 +49,6 @@ pipeline {
                         withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                             sh '''
                             echo "$DOCKER_PASSWORD" | docker login ${dockerRegistry} -u "$DOCKER_USERNAME" --password-stdin
-                            docker tag ${imageName}:${imageTag} ${REPOSITORY_URI}/${imageName}:${imageTag}
                             docker push ${REPOSITORY_URI}/${imageName}:${imageTag}
                             docker logout
                             '''
