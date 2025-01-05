@@ -8,6 +8,23 @@ pipeline {
         REPO_NAME = "go-grpc-graphql-microservices"
     }
     stages {
+        stage('Check Commit Message') {
+            steps {
+             script {
+            // Fetch the latest commit message
+            def commitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+            echo "Commit Message: ${commitMessage}"
+
+            // Check for [skip ci] in the commit message (case-insensitive)
+            if (commitMessage.toLowerCase().contains('[skip ci]')) {
+                echo "Skipping build due to [skip ci] in commit message"
+                currentBuild.result = 'ABORTED'
+                error('Build aborted due to [skip ci]')
+            }
+        }
+    }
+}
+
         stage('Clean Workspace') {
             steps {
                 cleanWs()
