@@ -82,7 +82,7 @@ func startService(cfg Config) {
 	defer r.Close()
 
 	s := account.NewService(r)
-	log.Println("Listening on port 8080 for gRPC....")
+	log.Println("Listening on port 8080 for gRPC...")
 	log.Fatal(account.ListenGRPC(s, 8080))
 }
 
