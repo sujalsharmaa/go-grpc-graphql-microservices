@@ -1,4 +1,3 @@
-# graphql-v2-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -6,6 +5,11 @@ metadata:
   namespace: ecommerce-app
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1         # Allow one extra Pod during updates
+      maxUnavailable: 25% # Allow 25% of Pods to be unavailable during updates
   selector:
     matchLabels:
       app: backend-graphql
@@ -25,9 +29,35 @@ spec:
             - configMapRef:
                 name: ecommerce-config
           volumeMounts:
-            - name: backend-graphql-volume1
+            - name: backend-graphql-volume
               mountPath: /data # Path inside the container where the volume is mounted
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 10 # Wait 10s after starting before checking
+            periodSeconds: 5        # Check every 5s
+            failureThreshold: 3     # Restart after 3 failures
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5 # Wait 5s after starting before checking
+            periodSeconds: 5       # Check every 5s
+            failureThreshold: 3    # Mark as not ready after 3 failures
+          securityContext:
+            runAsUser: 1000           # Run container as non-root user
+            runAsGroup: 1000          # Group ID
+            readOnlyRootFilesystem: true # Root filesystem is read-only
+            allowPrivilegeEscalation: false # Prevent privilege escalation
+          resources:
+            requests:
+              memory: "256Mi" # Request 256 MiB of memory
+              cpu: "500m"     # Request 500 millicores of CPU
+            limits:
+              memory: "512Mi" # Limit to 512 MiB of memory
+              cpu: "1"        # Limit to 1 CPU core
       volumes:
         - name: backend-graphql-volume
           persistentVolumeClaim:
-            claimName: ebs-claim-graphql                
+            claimName: ebs-claim-graphql

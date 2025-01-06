@@ -3,6 +3,13 @@ provider "aws" {
 }
 
 terraform {
+    backend "s3" {
+  bucket         = "ecommerce-prod-s3-125"
+  region         = "us-east-1"
+  key            = "go-grpc-graphql-microservices/terraform-EC2/terraform.tfstate"
+  dynamodb_table = "Lock-Files"
+  encrypt        = true
+}
   required_version = ">=1.0"
   required_providers {
     aws = {
