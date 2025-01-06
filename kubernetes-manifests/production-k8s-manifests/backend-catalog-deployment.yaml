@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend-catalog-deployment-container
-          image: sujalsharma/backend-catalog-deployment:v1
+          image: sujalsharma/backend-catalog-deployment:v2
           ports:
             - containerPort: 8080
           envFrom:

@@ -33,7 +33,7 @@ func main() {
 		handler.Playground("akhil", "/graphql").ServeHTTP(w, r)
 	})
 
-	log.Printf("GraphQL server is running on port 8080 and using AccountURL: %s, CatalogURL: %s, OrderURL: %s", cfg.AccountURL, cfg.CatalogURL, cfg.OrderURL)
+	log.Printf("GraphQL server v3 is running on port 8080 and using AccountURL: %s, CatalogURL: %s, OrderURL: %s", cfg.AccountURL, cfg.CatalogURL, cfg.OrderURL)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

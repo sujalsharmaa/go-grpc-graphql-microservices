@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend-order-deployment-container
-          image: sujalsharma/backend-order-deployment:v1
+          image: sujalsharma/backend-order-deployment:v2
           ports:
             - containerPort: 8080
           envFrom:
