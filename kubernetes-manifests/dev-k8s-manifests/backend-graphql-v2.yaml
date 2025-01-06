@@ -30,14 +30,14 @@ spec:
                 name: ecommerce-config
           livenessProbe:
             httpGet:
-              path: /
+              path: /playground
               port: 8080
             initialDelaySeconds: 10 # Wait 10s after starting before checking
             periodSeconds: 5        # Check every 5s
             failureThreshold: 3     # Restart after 3 failures
           readinessProbe:
             httpGet:
-              path: /
+              path: /playground
               port: 8080
             initialDelaySeconds: 5 # Wait 5s after starting before checking
             periodSeconds: 5       # Check every 5s
