@@ -26,9 +26,9 @@ spec:
             - configMapRef:
                 name: ecommerce-config
           volumeMounts:
-            - name: backend-elasticSearch-volume
+            - name: backend-elasticsearch-volume
               mountPath: /usr/share/elasticsearch/data # Path inside the container where the volume is mounted
       volumes:
-        - name: backend-elasticSearch-volume
+        - name: backend-elasticsearch-volume
           persistentVolumeClaim:
             claimName: elasticsearch-pvc               

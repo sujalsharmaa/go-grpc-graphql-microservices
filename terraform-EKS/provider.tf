@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~> 1.9.5"
+  required_version = "~> 1.11.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -14,17 +14,20 @@ terraform {
       version = "~> 2.10.0"
     }
   }
-  backend "s3" {
-  bucket         = "ecommerce-prod-s3-125"
-  region         = "us-east-1"
-  key            = "go-grpc-graphql-microservices/terraform-EKS/terraform.tfstate"
-    dynamodb_table = "Lock-Files"
-    encrypt        = true
-  }
 }
 
 provider "aws" {
   region = local.region
+}
+
+data "aws_eks_cluster" "eks-cluster" {
+  name       = local.eks_name
+  depends_on = [aws_eks_cluster.ecommerce-prod-cluster]
+}
+
+data "aws_eks_cluster_auth" "eks-cluster-auth" {
+  name       = local.eks_name
+  depends_on = [aws_eks_cluster.ecommerce-prod-cluster]
 }
 
 provider "kubernetes" {
