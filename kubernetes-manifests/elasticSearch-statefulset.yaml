@@ -1,3 +1,4 @@
+# elasticsearch-statefulset.yaml
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -8,15 +9,27 @@ spec:
   selector:
     matchLabels:
       app: backend-elasticsearch
-  serviceName: "backend-elasticsearch-service" # Required for StatefulSets
+  serviceName: "backend-elasticsearch-service"
   template:
     metadata:
       labels:
         app: backend-elasticsearch
     spec:
+      initContainers:
+        - name: fix-permissions
+          image: busybox
+          command: ["sh", "-c", "chown -R 1000:1000 /usr/share/elasticsearch/data"]
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - name: backend-elasticsearch-volume
+              mountPath: /usr/share/elasticsearch/data
       containers:
         - name: elasticsearch
           image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+          securityContext:
+            runAsUser: 1000
+            fsGroup: 1000
           ports:
             - containerPort: 9200
               name: http
@@ -25,10 +38,27 @@ spec:
           envFrom:
             - configMapRef:
                 name: ecommerce-config
+          env:
+            - name: ES_JAVA_OPTS
+              value: "-Xms512m -Xmx512m"
+            - name: discovery.type
+              value: single-node
+            - name: xpack.security.enabled
+              value: "false"
+            - name: bootstrap.memory_lock
+              value: "true"
           volumeMounts:
             - name: backend-elasticsearch-volume
-              mountPath: /usr/share/elasticsearch/data # Path inside the container where the volume is mounted
+              mountPath: /usr/share/elasticsearch/data
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi"
       volumes:
         - name: backend-elasticsearch-volume
           persistentVolumeClaim:
-            claimName: elasticsearch-pvc               
+            claimName: elasticsearch-pvc
+
