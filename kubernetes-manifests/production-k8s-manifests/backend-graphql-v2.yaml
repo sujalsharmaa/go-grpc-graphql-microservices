@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: backend-graphql
-          image: sujalsharma/backend-graphql-deployment:v2
+          image: sujalsharma/backend-graphql-deployment:v3
           ports:
             - containerPort: 8080
           envFrom:
