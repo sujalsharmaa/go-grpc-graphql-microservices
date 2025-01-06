@@ -57,7 +57,4 @@ spec:
             limits:
               memory: "512Mi" # Limit to 512 MiB of memory
               cpu: "1"        # Limit to 1 CPU core
-      volumes:
-        - name: backend-graphql-volume
-          persistentVolumeClaim:
-            claimName: ebs-claim-graphql
+
