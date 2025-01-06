@@ -28,19 +28,16 @@ spec:
           envFrom:
             - configMapRef:
                 name: ecommerce-config
-          volumeMounts:
-            - name: backend-graphql-volume
-              mountPath: /data # Path inside the container where the volume is mounted
           livenessProbe:
             httpGet:
-              path: /healthz
+              path: /_cluster/health
               port: 8080
             initialDelaySeconds: 10 # Wait 10s after starting before checking
             periodSeconds: 5        # Check every 5s
             failureThreshold: 3     # Restart after 3 failures
           readinessProbe:
             httpGet:
-              path: /ready
+              path: /_cluster/health
               port: 8080
             initialDelaySeconds: 5 # Wait 5s after starting before checking
             periodSeconds: 5       # Check every 5s
