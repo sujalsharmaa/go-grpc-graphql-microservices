@@ -28,10 +28,4 @@ spec:
                 secretKeyRef:
                   name: rds-secrets
                   key: DATABASE_URL_ORDER
-          volumeMounts:
-            - name: backend-order-volume
-              mountPath: /data # Path inside the container where the volume is mounted
-      volumes:
-        - name: backend-order-volume
-          persistentVolumeClaim:
-            claimName: ebs-claim-order                 
+              
