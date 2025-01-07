@@ -54,4 +54,11 @@ spec:
             limits:
               memory: "512Mi" # Limit to 512 MiB of memory
               cpu: "1"        # Limit to 1 CPU core
+          volumeMounts:
+            - name: graphql-v2-pv
+              mountPath: /data/db
+      volumes:
+        - name: graphql-v2-pv
+          persistentVolumeClaim:
+            claimName: graphql-v2-pvc                
 

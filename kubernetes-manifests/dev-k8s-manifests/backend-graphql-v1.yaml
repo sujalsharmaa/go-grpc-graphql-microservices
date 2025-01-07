@@ -24,4 +24,11 @@ spec:
           envFrom:
             - configMapRef:
                 name: ecommerce-config
+          volumeMounts:
+            - name: graphql-v1-pv
+              mountPath: /data/db
+      volumes:
+        - name: graphql-v1-pv
+          persistentVolumeClaim:
+            claimName: graphql-v1-pvc                  
           

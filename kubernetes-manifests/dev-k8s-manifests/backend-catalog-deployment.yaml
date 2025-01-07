@@ -21,3 +21,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: ecommerce-config
+          volumeMounts:
+            - name: catalog-pv
+              mountPath: /data/db
+      volumes:
+        - name: catalog-pv
+          persistentVolumeClaim:
+            claimName: catalog-pvc                  

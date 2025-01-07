@@ -11,3 +11,85 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /data/db
+
+---    
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: order-pv
+  namespace: ecommerce-app
+spec:
+  capacity: 
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/db
+
+---    
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: graphql-v1-pv
+  namespace: ecommerce-app
+spec:
+  capacity: 
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/db
+
+---    
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: graphql-v2-pv
+  namespace: ecommerce-app
+spec:
+  capacity: 
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/db
+
+---    
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: catalog-pv
+  namespace: ecommerce-app
+spec:
+  capacity: 
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/db
+
+---    
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-pv
+  namespace: ecommerce-app
+spec:
+  capacity: 
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/db
+
+---    

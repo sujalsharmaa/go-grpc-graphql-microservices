@@ -28,4 +28,11 @@ spec:
                 secretKeyRef:
                   name: rds-secrets
                   key: DATABASE_URL_ORDER
+          volumeMounts:
+            - name: order-pv
+              mountPath: /data/db
+      volumes:
+        - name: order-pv
+          persistentVolumeClaim:
+            claimName: order-pvc                    
               
