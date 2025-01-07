@@ -8,12 +8,15 @@ spec:
   selector:
     matchLabels:
       app: backend-elasticsearch
-  serviceName: "backend-elasticsearch-service" # Required for StatefulSets
+  serviceName: "backend-elasticsearch-service"
   template:
     metadata:
       labels:
         app: backend-elasticsearch
     spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
       containers:
         - name: elasticsearch
           image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
@@ -27,8 +30,8 @@ spec:
                 name: ecommerce-config
           volumeMounts:
             - name: backend-elasticsearch-volume
-              mountPath: /usr/share/elasticsearch/data # Path inside the container where the volume is mounted
+              mountPath: /var/lib/elasticsearch/data
       volumes:
         - name: backend-elasticsearch-volume
           persistentVolumeClaim:
-            claimName: elasticsearch-pvc               
+            claimName: elasticsearch-pvc
