@@ -40,6 +40,7 @@ spec:
             limits:
               memory: "128Mi" 
               cpu: "50m"         
+      volumes:
         - name: account-pv
           persistentVolumeClaim:
-            claimName: account-pvc
+            claimName: catalog-pvc
