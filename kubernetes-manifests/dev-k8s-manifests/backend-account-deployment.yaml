@@ -13,6 +13,9 @@ spec:
       labels:
         app: backend-account-deployment
     spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000    
       containers:
         - name: backend-account-deployment-container
           image: sujalsharma/backend-account-deployment:v2
