@@ -4,11 +4,10 @@ metadata:
   name: account-pv
   namespace: ecommerce-app
 spec:
-  capacity:
+  capacity: 
     storage: 1Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /  # Unique path for each PV
-  storageClassName: ""  # Match with PVC
+    path: /data/db
