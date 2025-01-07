@@ -31,7 +31,7 @@ spec:
                   name: rds-secrets
                   key: DATABASE_URL_ACCOUNT
           volumeMounts:
-            - name: backend-account-volume
+            - name: account-pv
               mountPath: / # Path inside the container where the volume is mounted
       volumes:
         - name: account-pv
