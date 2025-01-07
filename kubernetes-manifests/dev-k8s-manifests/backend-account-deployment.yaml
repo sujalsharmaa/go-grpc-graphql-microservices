@@ -32,7 +32,7 @@ spec:
                   key: DATABASE_URL_ACCOUNT
           volumeMounts:
             - name: account-pv
-              mountPath: / # Path inside the container where the volume is mounted
+              mountPath: /data/db
       volumes:
         - name: account-pv
           persistentVolumeClaim:
