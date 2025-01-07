@@ -5,24 +5,15 @@ metadata:
   namespace: ecommerce-app
 spec:
   replicas: 2
-  serviceName: "backend-elasticsearch-service"
   selector:
     matchLabels:
       app: backend-elasticsearch
+  serviceName: "backend-elasticsearch-service" # Required for StatefulSets
   template:
     metadata:
       labels:
         app: backend-elasticsearch
     spec:
-      initContainers:
-        - name: fix-permissions
-          image: busybox
-          command: ["sh", "-c", "chown -R 1000:1000 /usr/share/elasticsearch/data"]
-          securityContext:
-            runAsUser: 0
-          volumeMounts:
-            - name: backend-elasticsearch-volume
-              mountPath: /usr/share/elasticsearch/data
       containers:
         - name: elasticsearch
           image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
@@ -34,13 +25,3 @@ spec:
           envFrom:
             - configMapRef:
                 name: ecommerce-config
-          env:
-            - name: path.data
-              value: "/usr/share/elasticsearch/data"
-          volumeMounts:
-            - name: backend-elasticsearch-volume
-              mountPath: /usr/share/elasticsearch/data
-      volumes:
-        - name: backend-elasticsearch-volume
-          persistentVolumeClaim:
-            claimName: elasticsearch-pvc
