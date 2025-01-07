@@ -10,5 +10,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /data/account-db  # Unique path for each PV
+    path: /  # Unique path for each PV
   storageClassName: ""  # Match with PVC
