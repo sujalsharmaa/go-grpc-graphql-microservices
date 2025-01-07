@@ -49,8 +49,8 @@ spec:
             allowPrivilegeEscalation: false # Prevent privilege escalation
           resources:
             requests:
-              memory: "256Mi" # Request 256 MiB of memory
-              cpu: "500m"     # Request 500 millicores of CPU
+              memory: "128Mi" # Request 128 MiB of memory
+              cpu: "256m"     # Request 256 millicores of CPU
             limits:
               memory: "512Mi" # Limit to 512 MiB of memory
               cpu: "1"        # Limit to 1 CPU core
