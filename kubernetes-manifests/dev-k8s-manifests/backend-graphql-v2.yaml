@@ -52,8 +52,8 @@ spec:
               memory: "50Mi" # Request 128 MiB of memory
               cpu: "12m"     # Request 128 millicores of CPU
             limits:
-              memory: "512Mi" # Limit to 512 MiB of memory
-              cpu: "1"        # Limit to 1 CPU core
+              memory: "128Mi" # Limit to 512 MiB of memory
+              cpu: "50m"        # Limit to 1 CPU core
           volumeMounts:
             - name: graphql-v2-pv
               mountPath: /data/db
