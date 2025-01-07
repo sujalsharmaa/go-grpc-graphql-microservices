@@ -14,8 +14,8 @@ spec:
         app: backend-account-deployment
     spec:
       securityContext:
-        runAsUser: 1000  # Run as non-root user
-        fsGroup: 1000    # Set filesystem group
+        runAsUser: 1000 
+        fsGroup: 1000    
       containers:
         - name: backend-account-deployment-container
           image: sujalsharma/backend-account-deployment:v2
@@ -35,24 +35,11 @@ spec:
               mountPath: /data/db
           resources:
             requests:
-              memory: "64Mi"  # Minimum memory required
-              cpu: "25m"     # Minimum CPU required
+              memory: "64Mi"  
+              cpu: "25m"     
             limits:
-              memory: "128Mi" # Maximum memory allowed
-              cpu: "50m"     # Maximum CPU allowed
-          livenessProbe:
-            httpGet:
-              path: /   # Health check endpoint
-              port: 8080
-            initialDelaySeconds: 30  # Wait 30 seconds before starting probes
-            periodSeconds: 10        # Check every 10 seconds
-          readinessProbe:
-            httpGet:
-              path: /    # Readiness check endpoint
-              port: 8080
-            initialDelaySeconds: 30  # Wait 30 seconds before starting probes
-            periodSeconds: 10        # Check every 10 seconds
-      volumes:
+              memory: "128Mi" 
+              cpu: "50m"         
         - name: account-pv
           persistentVolumeClaim:
             claimName: account-pvc
