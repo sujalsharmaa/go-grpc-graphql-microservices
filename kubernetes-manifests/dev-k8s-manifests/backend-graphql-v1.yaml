@@ -5,6 +5,11 @@ metadata:
   namespace: ecommerce-app
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1         
+      maxUnavailable: 25%   
   selector:
     matchLabels:
       app: backend-graphql
