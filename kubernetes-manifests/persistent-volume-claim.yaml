@@ -21,7 +21,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: "aws-ebs-gp2"  # "default" for Azure "standard" for GCP and "NFS" for AWS
+  storageClassName: "gp2"  # "default" for Azure "standard" for GCP and "NFS" for AWS
   resources:
     requests:
       storage: 1Gi
@@ -36,7 +36,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: "aws-ebs-gp2"  # Match with PV
+  storageClassName: "gp2"  # Match with PV
   resources:
     requests:
       storage: 1Gi
@@ -51,7 +51,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: "aws-ebs-gp2"  # Match with PV
+  storageClassName: "nfs"  # Match with PV
   resources:
     requests:
       storage: 1Gi
@@ -66,7 +66,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: "aws-ebs-gp2"  # Match with PV
+  storageClassName: "xfs"  # Match with PV
   resources:
     requests:
       storage: 1Gi
