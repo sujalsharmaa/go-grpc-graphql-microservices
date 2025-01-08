@@ -37,7 +37,7 @@ spec:
                   key: DATABASE_URL_ORDER
           volumeMounts:
             - name: order-pv
-              mountPath: /data/order-db
+              mountPath: /data/db
           resources:
             requests:
               memory: "64Mi"  

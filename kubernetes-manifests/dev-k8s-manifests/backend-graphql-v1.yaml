@@ -33,7 +33,7 @@ spec:
                 name: ecommerce-config
           volumeMounts:
             - name: graphql-v1-pv
-              mountPath: /data/graphql-v1-db
+              mountPath: /data/db
           resources:
             requests:
               memory: "64Mi"
