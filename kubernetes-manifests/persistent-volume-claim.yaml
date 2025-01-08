@@ -21,7 +21,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: "default"  # "default" for Azure "standard" for GCP and "" for AWS
+  storageClassName: "default"  # "default" for Azure "standard" for GCP and "NFS" for AWS
   resources:
     requests:
       storage: 1Gi
