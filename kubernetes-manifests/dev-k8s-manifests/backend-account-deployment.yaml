@@ -37,7 +37,7 @@ spec:
                   key: DATABASE_URL_ACCOUNT
           volumeMounts:
             - name: account-pv
-              mountPath: /data/db
+              mountPath: /data/account-db
           resources:
             requests:
               memory: "64Mi"  

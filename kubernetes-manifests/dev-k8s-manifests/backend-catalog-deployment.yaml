@@ -31,7 +31,7 @@ spec:
                 name: ecommerce-config
           volumeMounts:
             - name: catalog-pv
-              mountPath: /data/db
+              mountPath: /data/catalog-db
           resources:
             requests:
               memory: "64Mi" 
