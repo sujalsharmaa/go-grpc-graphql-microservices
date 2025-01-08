@@ -1,20 +1,9 @@
-alertmanager:
-  config:
-    global:
-      smtp_smarthost: "smtp.gmail.com:587"
-      smtp_from: "techsharma53@gmail.com"
-      smtp_auth_username: "techsharma53@gmail.com"
-      smtp_auth_password: "csvdmvyncmjovwwx"
-      smtp_require_tls: true
-
-    route:
-      group_by: ['alertname']
-      group_wait: 30s
-      group_interval: 5m
-      repeat_interval: 3h
-      receiver: email-alert
-
-    receivers:
-      - name: email-alert
-        email_configs:
-          - to: "techsharma53@gmail.com"
+grafana:
+  grafana.ini:
+    smtp:
+      enabled: true
+      host: smtp.gmail.com:587
+      user: techsharma53@gmail.com
+      password: csvdmvyncmjovwwx
+      from_address: techsharma53@gmail.com
+      startTLS_policy: "Always"
