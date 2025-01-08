@@ -4,7 +4,12 @@ metadata:
   name: backend-account-deployment
   namespace: ecommerce-app
 spec:
-  replicas: 2
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1         
+      maxUnavailable: 25%   
   selector:
     matchLabels:
       app: backend-account-deployment
@@ -13,6 +18,9 @@ spec:
       labels:
         app: backend-account-deployment
     spec:
+      securityContext:
+        runAsUser: 1000 
+        fsGroup: 1000    
       containers:
         - name: backend-account-deployment-container
           image: sujalsharma/backend-account-deployment:v2
@@ -28,9 +36,16 @@ spec:
                   name: rds-secrets
                   key: DATABASE_URL_ACCOUNT
           volumeMounts:
-            - name: backend-account-volume
-              mountPath: /data # Path inside the container where the volume is mounted
+            - name: account-pv
+              mountPath: /data/db
+          resources:
+            requests:
+              memory: "64Mi"  
+              cpu: "25m"     
+            limits:
+              memory: "128Mi" 
+              cpu: "50m"         
       volumes:
-        - name: backend-account-volume
+        - name: account-pv
           persistentVolumeClaim:
-            claimName: ebs-claim-account
+            claimName: catalog-pvc

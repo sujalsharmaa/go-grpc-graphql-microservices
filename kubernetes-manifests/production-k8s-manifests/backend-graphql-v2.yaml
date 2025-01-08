@@ -4,12 +4,12 @@ metadata:
   name: backend-graphql-v2
   namespace: ecommerce-app
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1         # Allow one extra Pod during updates
-      maxUnavailable: 25% # Allow 25% of Pods to be unavailable during updates
+      maxSurge: 1         
+      maxUnavailable: 25% 
   selector:
     matchLabels:
       app: backend-graphql
@@ -28,36 +28,37 @@ spec:
           envFrom:
             - configMapRef:
                 name: ecommerce-config
-          volumeMounts:
-            - name: backend-graphql-volume
-              mountPath: /data # Path inside the container where the volume is mounted
           livenessProbe:
             httpGet:
-              path: /healthz
+              path: /playground
               port: 8080
-            initialDelaySeconds: 10 # Wait 10s after starting before checking
-            periodSeconds: 5        # Check every 5s
-            failureThreshold: 3     # Restart after 3 failures
+            initialDelaySeconds: 10 
+            periodSeconds: 5        
+            failureThreshold: 3    
           readinessProbe:
             httpGet:
-              path: /ready
+              path: /playground
               port: 8080
-            initialDelaySeconds: 5 # Wait 5s after starting before checking
-            periodSeconds: 5       # Check every 5s
-            failureThreshold: 3    # Mark as not ready after 3 failures
+            initialDelaySeconds: 5 
+            periodSeconds: 5       
+            failureThreshold: 3   
           securityContext:
-            runAsUser: 1000           # Run container as non-root user
-            runAsGroup: 1000          # Group ID
-            readOnlyRootFilesystem: true # Root filesystem is read-only
-            allowPrivilegeEscalation: false # Prevent privilege escalation
+            runAsUser: 1000           
+            runAsGroup: 1000          
+            readOnlyRootFilesystem: true 
+            allowPrivilegeEscalation: false 
           resources:
             requests:
-              memory: "256Mi" # Request 256 MiB of memory
-              cpu: "500m"     # Request 500 millicores of CPU
+              memory: "50Mi" 
+              cpu: "12m"    
             limits:
-              memory: "512Mi" # Limit to 512 MiB of memory
-              cpu: "1"        # Limit to 1 CPU core
+              memory: "128Mi"
+              cpu: "50m"       
+          volumeMounts:
+            - name: graphql-v2-pv
+              mountPath: /data/db
       volumes:
-        - name: backend-graphql-volume
+        - name: graphql-v2-pv
           persistentVolumeClaim:
-            claimName: ebs-claim-graphql
+            claimName: graphql-v2-pvc                
+

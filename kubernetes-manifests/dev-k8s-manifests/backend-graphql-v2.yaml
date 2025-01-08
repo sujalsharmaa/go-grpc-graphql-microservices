@@ -47,13 +47,13 @@ spec:
             runAsGroup: 1000          
             readOnlyRootFilesystem: true 
             allowPrivilegeEscalation: false 
-          # resources:
-          #   requests:
-          #     memory: "50Mi" 
-          #     cpu: "12m"    
-          #   limits:
-          #     memory: "128Mi"
-          #     cpu: "50m"       
+          resources:
+            requests:
+              memory: "50Mi" 
+              cpu: "12m"    
+            limits:
+              memory: "128Mi"
+              cpu: "50m"       
           volumeMounts:
             - name: graphql-v2-pv
               mountPath: /data/db

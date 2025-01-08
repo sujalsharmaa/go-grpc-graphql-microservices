@@ -4,7 +4,12 @@ metadata:
   name: backend-catalog-deployment
   namespace: ecommerce-app
 spec:
-  replicas: 2
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1         
+      maxUnavailable: 25%   
   selector:
     matchLabels:
       app: backend-catalog-deployment
@@ -13,6 +18,9 @@ spec:
       labels:
         app: backend-catalog-deployment
     spec:
+      securityContext:
+        runAsUser: 1000  
+        fsGroup: 1000    
       containers:
         - name: backend-catalog-deployment-container
           image: sujalsharma/backend-catalog-deployment:v2
@@ -22,9 +30,16 @@ spec:
             - configMapRef:
                 name: ecommerce-config
           volumeMounts:
-            - name: backend-catalog-volume
-              mountPath: /data # Path inside the container where the volume is mounted
+            - name: catalog-pv
+              mountPath: /data/db
+          resources:
+            requests:
+              memory: "64Mi" 
+              cpu: "25m"     
+            limits:
+              memory: "128Mi" 
+              cpu: "50m"           
       volumes:
-        - name: backend-catalog-volume
+        - name: catalog-pv
           persistentVolumeClaim:
-            claimName: ebs-claim-catalog
+            claimName: catalog-pvc

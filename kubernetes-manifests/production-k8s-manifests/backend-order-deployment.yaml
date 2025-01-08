@@ -1,11 +1,15 @@
-# Deployment for Backend order Service
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-order-deployment
   namespace: ecommerce-app
 spec:
-  replicas: 2
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1         
+      maxUnavailable: 25%   
   selector:
     matchLabels:
       app: backend-order-deployment
@@ -14,6 +18,9 @@ spec:
       labels:
         app: backend-order-deployment
     spec:
+      securityContext:
+        runAsUser: 1000 
+        fsGroup: 1000   
       containers:
         - name: backend-order-deployment-container
           image: sujalsharma/backend-order-deployment:v2
@@ -29,9 +36,16 @@ spec:
                   name: rds-secrets
                   key: DATABASE_URL_ORDER
           volumeMounts:
-            - name: backend-order-volume
-              mountPath: /data # Path inside the container where the volume is mounted
+            - name: order-pv
+              mountPath: /data/db
+          resources:
+            requests:
+              memory: "64Mi"  
+              cpu: "25m"     
+            limits:
+              memory: "128Mi" 
+              cpu: "50m"          
       volumes:
-        - name: backend-order-volume
+        - name: order-pv
           persistentVolumeClaim:
-            claimName: ebs-claim-order                 
+            claimName: order-pvc
