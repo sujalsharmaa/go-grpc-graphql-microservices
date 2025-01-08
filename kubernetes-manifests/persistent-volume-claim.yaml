@@ -5,7 +5,7 @@ metadata:
   namespace: ecommerce-app  # Match with PV namespace
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: "gp2"  # Match with PV
   resources:
     requests:
@@ -20,7 +20,7 @@ metadata:
   namespace: ecommerce-app  # Match with PV namespace
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: "gp2"  # "default" for Azure "standard" for GCP and "gp2" for AWS
   resources:
     requests:
@@ -35,7 +35,7 @@ metadata:
   namespace: ecommerce-app  # Match with PV namespace
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: "gp2"  # Match with PV
   resources:
     requests:
@@ -50,7 +50,7 @@ metadata:
   namespace: ecommerce-app  # Match with PV namespace
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: "gp2"  # Match with PV
   resources:
     requests:
@@ -65,7 +65,7 @@ metadata:
   namespace: ecommerce-app  # Match with PV namespace
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: "gp2"  # Match with PV
   resources:
     requests:
@@ -80,7 +80,7 @@ metadata:
   namespace: ecommerce-app  # Match with PV namespace
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: "gp2"  # Match with PV
   resources:
     requests:
