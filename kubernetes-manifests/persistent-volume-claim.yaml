@@ -6,7 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: "aws-ebs-gp2"  # Match with PV
+  storageClassName: ""  # Match with PV
   resources:
     requests:
       storage: 1Gi
