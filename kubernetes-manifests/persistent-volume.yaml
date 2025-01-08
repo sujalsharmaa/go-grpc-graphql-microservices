@@ -10,7 +10,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /data/db
+    path: /data/account-db
 
 ---    
 
@@ -26,7 +26,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /data/db
+    path: /data/order-db
 
 ---    
 
@@ -42,7 +42,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /data/db
+    path: /data/graphql-v1-db
 
 ---    
 
@@ -58,7 +58,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /data/db
+    path: /data/graphql-v2-db
 
 ---    
 
@@ -74,7 +74,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /data/db
+    path: /data/catalog-db
 
 ---    
 
@@ -90,5 +90,5 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /data/db
+    path: /data/elasticsearch-db
 
