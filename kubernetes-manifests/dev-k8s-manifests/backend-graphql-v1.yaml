@@ -25,7 +25,7 @@ spec:
         fsGroup: 1000  
       containers:
         - name: backend-graphql
-          image: sujalsharma/backend-graphql-deployment:v2
+          image: sujalsharma/backend-graphql-deployment:3
           ports:
             - containerPort: 8080
           envFrom:
