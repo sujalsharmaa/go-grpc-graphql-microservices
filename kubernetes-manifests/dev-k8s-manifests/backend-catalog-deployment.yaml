@@ -23,7 +23,7 @@ spec:
         fsGroup: 1000    
       containers:
         - name: backend-catalog-deployment-container
-          image: sujalsharma/backend-catalog-deployment:13
+          image: sujalsharma/backend-catalog-deployment:2
           ports:
             - containerPort: 8080
           envFrom:
