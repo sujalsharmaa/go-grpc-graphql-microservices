@@ -23,7 +23,7 @@ spec:
         fsGroup: 1000    
       containers:
         - name: backend-account-deployment-container
-          image: sujalsharma/backend-account-deployment:3
+          image: sujalsharma/backend-account-deployment:4
           ports:
             - containerPort: 8080
           envFrom:
